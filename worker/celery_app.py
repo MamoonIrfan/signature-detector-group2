@@ -10,4 +10,5 @@ celery_app.conf.update(
     task_track_started=True,
     result_expires=3600,
     broker_connection_retry_on_startup=True,
+    broker_transport_options={"visibility_timeout": 30},   # demo ke liye, crash ke baad job jaldi wapas aaye
 )
