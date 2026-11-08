@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from celery_app import celery_app
 
 load_dotenv()
+
+# --- JSON logging ---
 log = logging.getLogger("worker")
 if not log.handlers:
     _h = logging.StreamHandler()
@@ -13,6 +15,7 @@ if not log.handlers:
     log.setLevel(logging.INFO)
     log.propagate = False
 
+# --- Redis ---
 _url = os.getenv("REDIS_URL", "")
 _base = _url.split("?")[0]
 r = redis.from_url(
@@ -46,8 +49,8 @@ def get_status(job_id):
 def detect(image_path):
     # Dummy. Zubair ka asli detect() aane par yahan replace hoga.
     if "bad" in image_path:
-        raise ValueError("corrupt image")   # retry test ke liye
-    time.sleep(3)
+        raise ValueError("corrupt image")      # retry test ke liye
+    time.sleep(15 if "slow" in image_path else 3)   # slow = crash test ke liye
     return {"image": image_path, "signatures_found": 1, "boxes": [[10, 10, 100, 50]]}
 
 
@@ -67,16 +70,24 @@ class JobTask(Task):
 
 @celery_app.task(bind=True, base=JobTask, acks_late=True,
                  autoretry_for=(Exception,), retry_backoff=True,
-                 retry_backoff_max=60, retry_jitter=True, max_retries=3)
+                 retry_backoff_max=60, retry_jitter=False, max_retries=3)
 def process_job(self, job_id, image_path):
     state = get_status(job_id)
     if state and state["status"] == "done":
         log_event(job_id, "skipped_duplicate", reason="already done")
         return state.get("result")
-    # Idempotency: pehli attempt par lock lo, retries usi lock ke saath chalti hain
-    if self.request.retries == 0 and not r.set(f"lock:{job_id}", "1", nx=True, ex=600):
-        log_event(job_id, "skipped_duplicate", reason="already processing")
-        return None
+
+    # Idempotency: pehli attempt par lock. Crash ke baad redeliver hui job ko lock se nahi roka jata.
+    redelivered = bool((self.request.delivery_info or {}).get("redelivered"))
+    if self.request.retries == 0 and not redelivered:
+        if not r.set(f"lock:{job_id}", "1", nx=True, ex=60):
+            log_event(job_id, "skipped_duplicate", reason="already processing")
+            return None
+    else:
+        r.set(f"lock:{job_id}", "1", ex=60)
+        if redelivered:
+            log_event(job_id, "redelivered", note="picked up after worker crash")
+
     set_status(job_id, "processing", attempt=self.request.retries + 1)
     start = time.time()
     result = detect(image_path)
