@@ -6,6 +6,12 @@ from celery_app import celery_app
 
 load_dotenv()
 log = logging.getLogger("worker")
+if not log.handlers:
+    _h = logging.StreamHandler()
+    _h.setFormatter(logging.Formatter("%(message)s"))
+    log.addHandler(_h)
+    log.setLevel(logging.INFO)
+    log.propagate = False
 
 _url = os.getenv("REDIS_URL", "")
 _base = _url.split("?")[0]
@@ -17,7 +23,12 @@ r = redis.from_url(
 
 
 def log_event(job_id, status, **extra):
-    log.info(json.dumps({"job_id": job_id, "status": status, **extra}))
+    log.info(json.dumps({
+        "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "job_id": job_id,
+        "status": status,
+        **extra,
+    }))
 
 
 def set_status(job_id, status, **extra):
