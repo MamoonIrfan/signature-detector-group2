@@ -6,6 +6,11 @@ from celery_app import celery_app
 
 load_dotenv()
 
+# --- API database (jobs table) --- [added for API integration]
+# Imported after load_dotenv() so DATABASE_URL etc. are already in the environment.
+from app.db import SessionLocal  # noqa: E402
+from app.models import Job  # noqa: E402
+
 # --- JSON logging ---
 log = logging.getLogger("worker")
 if not log.handlers:
@@ -34,7 +39,44 @@ def log_event(job_id, status, **extra):
     }))
 
 
+# --- [added for API integration] mirror job state into the API's `jobs` table ---
+def sync_db(job_id, status, **extra):
+    """Keeps GET /jobs/{id} in sync. Does nothing if the job has no DB row (e.g. test_flow.py)."""
+    db_status = "processing" if status == "retrying" else status
+    try:
+        with SessionLocal() as db:
+            job = db.get(Job, job_id)
+            if job is None:
+                return
+            job.status = db_status
+            if status == "done":
+                result = extra.get("result") or {}
+                if "detections" not in result:  # dummy format -> API contract format
+                    result = {**result, "detections": [{"bbox": b, "score": None} for b in result.get("boxes", [])]}
+                job.result_json = result
+                job.error = None
+            elif status in ("failed", "retrying"):
+                job.error = extra.get("error")
+            db.commit()
+    except Exception:
+        log.exception("db sync failed job_id=%s status=%s", job_id, status)
+        if status == "done":
+            raise  # let Celery retry, otherwise the API would show 'processing' forever
+
+
+def load_input_key(job_id):
+    """[added] The API sends only job_id; the input image lives in storage, its key is in the jobs table."""
+    with SessionLocal() as db:
+        job = db.get(Job, job_id)
+        if job is None:
+            raise ValueError(f"job {job_id} not found in database")
+        if job.job_type != "detect":
+            raise NotImplementedError(f"job type '{job.job_type}' is not supported yet")
+        return job.input_keys["image"]
+
+
 def set_status(job_id, status, **extra):
+    sync_db(job_id, status, **extra)          # [added] DB first, then Redis
     r.set(f"job:{job_id}",
           json.dumps({"job_id": job_id, "status": status, **extra}),
           ex=86400)
@@ -48,9 +90,10 @@ def get_status(job_id):
 
 def detect(image_path):
     # Dummy. Zubair ka asli detect() aane par yahan replace hoga.
-    if "bad" in image_path:
+    name = os.path.basename(image_path)   # [changed] storage keys contain a random uuid, which could contain "bad"
+    if "bad" in name:
         raise ValueError("corrupt image")      # retry test ke liye
-    time.sleep(15 if "slow" in image_path else 3)   # slow = crash test ke liye
+    time.sleep(15 if "slow" in name else 3)   # slow = crash test ke liye
     return {"image": image_path, "signatures_found": 1, "boxes": [[10, 10, 100, 50]]}
 
 
@@ -68,14 +111,18 @@ class JobTask(Task):
         r.delete(f"lock:{job_id}")
 
 
-@celery_app.task(bind=True, base=JobTask, acks_late=True,
+# [changed] explicit task name (the API sends "worker.process_job"); image_path is now optional
+@celery_app.task(name="worker.process_job", bind=True, base=JobTask, acks_late=True,
                  autoretry_for=(Exception,), retry_backoff=True,
                  retry_backoff_max=60, retry_jitter=False, max_retries=3)
-def process_job(self, job_id, image_path):
+def process_job(self, job_id, image_path=None):
     state = get_status(job_id)
     if state and state["status"] == "done":
         log_event(job_id, "skipped_duplicate", reason="already done")
         return state.get("result")
+
+    if image_path is None:                      # [added] job came from the API
+        image_path = load_input_key(job_id)
 
     # Idempotency: pehli attempt par lock. Crash ke baad redeliver hui job ko lock se nahi roka jata.
     redelivered = bool((self.request.delivery_info or {}).get("redelivered"))
