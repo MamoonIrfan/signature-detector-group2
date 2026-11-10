@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.runtime-*/
+__pycache__/
+*.pyc
+downloads/
+datasets/
+vendor/
+pretrained/
+outputs/
+tracking_review/
+test_scratch/
+runtime.json

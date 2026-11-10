@@ -1,0 +1,77 @@
+name: Signature Day 3 CPU trial
+
+on:
+  workflow_dispatch:
+    inputs:
+      epochs:
+        description: CPU integration epochs (1-3)
+        required: true
+        default: '2'
+        type: string
+      dataset_revision:
+        description: Immutable HF dataset SHA (40 hex characters)
+        required: true
+        default: a55352328a1fbc3442b54db0e377f5add470bcba
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signature-day3-cpu-trial
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      PYTHONUNBUFFERED: '1'
+      INPUT_EPOCHS: ${{ inputs.epochs }}
+      INPUT_REVISION: ${{ inputs.dataset_revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Validate request and train
+        working-directory: signature_day3
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, re, subprocess, sys
+          text = os.environ['INPUT_EPOCHS']
+          if not re.fullmatch(r'[1-3]', text):
+              raise ValueError('CPU integration requests must use 1-3 epochs')
+          revision = os.environ['INPUT_REVISION']
+          if not re.fullmatch(r'[0-9a-fA-F]{40}', revision):
+              raise ValueError('Dataset revision must be an immutable HF commit SHA')
+          run_id = 'ci_'+os.environ['GITHUB_RUN_ID']+'_'+os.environ['GITHUB_RUN_ATTEMPT']
+          subprocess.run([
+              sys.executable, '-u', 'train_day3.py',
+              '--dataset', 'AimaArshad/signature-detection-yolox',
+              '--dataset-revision', revision,
+              '--epochs', text, '--batch-size', '2', '--device', 'cpu',
+              '--workers', '0', '--smoke', '--train-limit', '32',
+              '--val-limit', '16', '--test-limit', '16',
+              '--output', 'outputs/'+run_id,
+          ], check=True)
+          PY
+      - name: Save measured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signature-day3-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 7
+          path: |
+            signature_day3/outputs/ci_${{ github.run_id }}_${{ github.run_attempt }}/reports/
+            signature_day3/outputs/ci_${{ github.run_id }}_${{ github.run_attempt }}/acceptance/
+            signature_day3/outputs/ci_${{ github.run_id }}_${{ github.run_attempt }}/artifact/farhan_handoff.zip

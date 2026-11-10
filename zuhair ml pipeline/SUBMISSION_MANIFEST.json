@@ -1,0 +1,227 @@
+{
+    "assembled_at_utc":  "2026-11-10T12:48:25.0723586Z",
+    "repository":  "MamoonIrfan/signature-detector-group2",
+    "suggested_branch":  "feature/zubair-ml-pipeline",
+    "files":  [
+                  {
+                      "path":  ".github/workflows/signature-day3.yml",
+                      "size_bytes":  2817,
+                      "sha256":  "345485dcdc363c7e022a14dee248b53347f0a020008cc1050ded8401faa2411d"
+                  },
+                  {
+                      "path":  "docs/ml/Signature_Detection_Day4_Terminology_Guide.pdf",
+                      "size_bytes":  90939,
+                      "sha256":  "1d01040840102324180abd404ae73a3323a72b34ad0376a17121670af5d355f3"
+                  },
+                  {
+                      "path":  "notebooks/Signature_YOLOX_S_Day2_Colab.ipynb",
+                      "size_bytes":  331225,
+                      "sha256":  "5bff086d8be6d45eba745b8d5890cec3ff19dc60f7addf54773a83231d1cfede"
+                  },
+                  {
+                      "path":  "notebooks/Signature_YOLOX_S_Day3_Colab.ipynb",
+                      "size_bytes":  247321,
+                      "sha256":  "83c20f4036c7ecf8326bcfdcbf425a6d99948e0d5e928e61e721d290f42e5501"
+                  },
+                  {
+                      "path":  "signature_day3/.env.example",
+                      "size_bytes":  114,
+                      "sha256":  "ba3860445f211c3535a289e38381e86569002c73cc30acafe9a231ed65c2cf8e"
+                  },
+                  {
+                      "path":  "signature_day3/.gitignore",
+                      "size_bytes":  151,
+                      "sha256":  "552f8f2fb24078f00190269f15afbb4a40cb360d15019244cda3ef843cfc20fc"
+                  },
+                  {
+                      "path":  "signature_day3/bootstrap.py",
+                      "size_bytes":  6049,
+                      "sha256":  "ab79ced33ad82e2ecb598358003cb612123c9556011b0ec5360ce1af3a9b73d4"
+                  },
+                  {
+                      "path":  "signature_day3/checkpoints.py",
+                      "size_bytes":  8140,
+                      "sha256":  "89c90f744f65ad4ecbae86b3d1a29f51f1315df37da678a9c557b3ba4b2ce881"
+                  },
+                  {
+                      "path":  "signature_day3/common.py",
+                      "size_bytes":  3126,
+                      "sha256":  "53a6eddff107f3e7e2f93a311d2ef4ddedf808db3d8c1d390cf3696e335bc24d"
+                  },
+                  {
+                      "path":  "signature_day3/config.example.json",
+                      "size_bytes":  718,
+                      "sha256":  "e3cc794e3201e9ef7653edacfc20ea44137ffe693843b17674907c82c35f6d69"
+                  },
+                  {
+                      "path":  "signature_day3/data_loading.py",
+                      "size_bytes":  3228,
+                      "sha256":  "549220a094660f71493671161b4b7c3aea982515b0219d87b29c003c7cf98376"
+                  },
+                  {
+                      "path":  "signature_day3/dataset.py",
+                      "size_bytes":  8839,
+                      "sha256":  "939258f1c245b12bd0ac8e9b6258f05ad73cc369ef29498b0a6349a965cab2c0"
+                  },
+                  {
+                      "path":  "signature_day3/DAY2_REFERENCE.md",
+                      "size_bytes":  9961,
+                      "sha256":  "aa7a82f3419a02c65c178fef3fbb18b7506ce32b15a8bf247299dede102f4928"
+                  },
+                  {
+                      "path":  "signature_day3/day3_data.py",
+                      "size_bytes":  4705,
+                      "sha256":  "4b5d02a639b46274f097125e3354a4ddd86d21c6e75d8aeef2cb305269e0c5ad"
+                  },
+                  {
+                      "path":  "signature_day3/day3_gate.py",
+                      "size_bytes":  2449,
+                      "sha256":  "315030e9720e2d7d6c081941266242aad27966e874d44c3d35f02f1dfb191c1d"
+                  },
+                  {
+                      "path":  "signature_day3/day3_registry.py",
+                      "size_bytes":  7290,
+                      "sha256":  "a7db20abc2a8e38400a0c2e4da605dda27d03b686cce3a9fa9d880098026fd1c"
+                  },
+                  {
+                      "path":  "signature_day3/DAY3_VALIDATION.md",
+                      "size_bytes":  2125,
+                      "sha256":  "9bc2378acaf864a6e0e5b0a31a236d6f47f3dfa82358cde10e94053de2cb9a71"
+                  },
+                  {
+                      "path":  "signature_day3/detect.py",
+                      "size_bytes":  8900,
+                      "sha256":  "f221b2b08cbdb00672f29e893ac04b0e4755092fdad5a5d42a9b9550fbe949f6"
+                  },
+                  {
+                      "path":  "signature_day3/evaluation.py",
+                      "size_bytes":  3539,
+                      "sha256":  "58bb29428714312c5961c11957b4189ce3a47298ed15c6f49de2cd24a63158af"
+                  },
+                  {
+                      "path":  "signature_day3/exp_signature_yolox_s.py",
+                      "size_bytes":  341,
+                      "sha256":  "8425268656c069ab25df8f5f4d3a879b56d4419977501b910bad4449cb76c1cf"
+                  },
+                  {
+                      "path":  "signature_day3/export_model.py",
+                      "size_bytes":  8878,
+                      "sha256":  "3fb50600cd1f3f75b0e153963d60e904e3f419676f29a1a572bc24f69d61216f"
+                  },
+                  {
+                      "path":  "signature_day3/FARHAN_HANDOFF.md",
+                      "size_bytes":  3402,
+                      "sha256":  "b9dcf77902ccbfa9c4302cbc0b37769a074b6a3eb42e3980f87c14932d5b596b"
+                  },
+                  {
+                      "path":  "signature_day3/fixtures/unsigned_document.png",
+                      "size_bytes":  75772,
+                      "sha256":  "ece174eeff812458d4782e5aa196b56177b5ac3d0028b02f1671667ac4eb172d"
+                  },
+                  {
+                      "path":  "signature_day3/geometry.py",
+                      "size_bytes":  2482,
+                      "sha256":  "605938320b4279fc2b1e8538a247dc6588fb9b95547fdff2702463535e8d65d7"
+                  },
+                  {
+                      "path":  "signature_day3/LICENSE",
+                      "size_bytes":  11371,
+                      "sha256":  "0ec3668d3274bcf29e8a29e9576d5a2cd96fc78d3c5bec4387355a796e5d9088"
+                  },
+                  {
+                      "path":  "signature_day3/modeling.py",
+                      "size_bytes":  2038,
+                      "sha256":  "365b1acefaaeb10434c17769a1eb6910cd1a0eb19138c1fb6890e7dad95e72ec"
+                  },
+                  {
+                      "path":  "signature_day3/NOTICE.txt",
+                      "size_bytes":  380,
+                      "sha256":  "ecf691ae1504d4520a53b8b28ba6c6192b13a7af70f43c323e322933f516dc0a"
+                  },
+                  {
+                      "path":  "signature_day3/onnx_evaluate.py",
+                      "size_bytes":  2351,
+                      "sha256":  "9b7240b1458f9d72ea07cc2e1c930094e87d7b9f95babab52d45439b97e61aeb"
+                  },
+                  {
+                      "path":  "signature_day3/pipeline.py",
+                      "size_bytes":  13517,
+                      "sha256":  "1f9bc63d09daad75692d2cc47f899b416d572170484f1aedc1b5624f67e39513"
+                  },
+                  {
+                      "path":  "signature_day3/r2_storage.py",
+                      "size_bytes":  5393,
+                      "sha256":  "3822d8cd2ed4cdb592b851b8731b141c57c1adfac4fbca94a50f126bb9ac7a3d"
+                  },
+                  {
+                      "path":  "signature_day3/README.md",
+                      "size_bytes":  11981,
+                      "sha256":  "414886fc74ec973e9292199eb98dada477cbe8f91bb3fed36b721b8de99aa615"
+                  },
+                  {
+                      "path":  "signature_day3/recover_cpu_smoke_license.py",
+                      "size_bytes":  2348,
+                      "sha256":  "23eebc9862cedcd92bd1ec592d42ad4da11bd339d43e4994a028c106b201fd1c"
+                  },
+                  {
+                      "path":  "signature_day3/reports.py",
+                      "size_bytes":  11302,
+                      "sha256":  "5365149098019e625d13a572489881870ee5e27d458b47b4b5f83a1b0ac35ae8"
+                  },
+                  {
+                      "path":  "signature_day3/requirements_inference.txt",
+                      "size_bytes":  147,
+                      "sha256":  "f6b6b4001df6dcf2b6c73e299d1bc22bf413cc7f1b0215675b7b4c8a6776c0f7"
+                  },
+                  {
+                      "path":  "signature_day3/requirements_training.txt",
+                      "size_bytes":  354,
+                      "sha256":  "9a7c8f23d8e9a90a5faea6dd8ed8199b8fa947ec9b0296bafcee7594b51174c0"
+                  },
+                  {
+                      "path":  "signature_day3/restore_tracking.py",
+                      "size_bytes":  1439,
+                      "sha256":  "b71e0bb332f90ebc197096fbe61f016a2312490a8144ff6d96d4cce4bd675c4b"
+                  },
+                  {
+                      "path":  "signature_day3/run_official.py",
+                      "size_bytes":  1156,
+                      "sha256":  "1b06242ee587ea804db473284519064295cfe6eef3238b34528c90063d5d7e85"
+                  },
+                  {
+                      "path":  "signature_day3/tests/test_day2.py",
+                      "size_bytes":  17123,
+                      "sha256":  "6d69bf2e27fb6b91670726fa7c3dc44e51274afe34c4f9be3989434c10c1175a"
+                  },
+                  {
+                      "path":  "signature_day3/tests/test_day3.py",
+                      "size_bytes":  8177,
+                      "sha256":  "61f2f4476bfc36a1bb0d355166c5c190f087b7cd5fa8da3740d0dc406a9aa980"
+                  },
+                  {
+                      "path":  "signature_day3/tests/test_packaging.py",
+                      "size_bytes":  2257,
+                      "sha256":  "da1eea741adc0494d511217de7185f067bcacca6f32205da1631da2887f0fd45"
+                  },
+                  {
+                      "path":  "signature_day3/train_day3.py",
+                      "size_bytes":  19024,
+                      "sha256":  "b2bcec47f873ac6e4f61f32966d4eb94868872ccf54599b295e816646acd6691"
+                  },
+                  {
+                      "path":  "signature_day3/training.py",
+                      "size_bytes":  9334,
+                      "sha256":  "2dc3483906ced922eec3c6bd23502c2c0ecf6e242191962c0e01a4b5eec03e02"
+                  },
+                  {
+                      "path":  "signature_day3/trigger_remote.py",
+                      "size_bytes":  2574,
+                      "sha256":  "13342eb9987e87a912a0431cdf49f668a829cc9309d50424d2da8a0b9bca5bf5"
+                  },
+                  {
+                      "path":  "signature_day3/VALIDATION.md",
+                      "size_bytes":  1627,
+                      "sha256":  "d6bf1cbfe73b290f0eb76d5aef190e13a2e5459bd5c6b771887e5098170832ec"
+                  }
+              ]
+}
