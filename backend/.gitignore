@@ -7,3 +7,5 @@ storage/
 .venv/
 .vscode/
 *.png
+*.onnx
+signature_crops/
